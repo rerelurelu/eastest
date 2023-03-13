@@ -1,3 +1,4 @@
 # Pyenv Stuff
 .venv
 .python-version
+.mypy_cache
