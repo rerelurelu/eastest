@@ -21,7 +21,20 @@ with col1:
 with col2:
     st.text_input('digits', placeholder='桁数', label_visibility='hidden')
 
-_, col2 = st.columns([6, 0])
+st.button('生成')
 
+# Margin
+for _ in range(5):
+    blank_line()
+
+# Generated text section
+st.subheader('生成済みテキスト')
+
+st.text_area('', disabled=True, label_visibility='hidden')
+
+col1, col2, _ = st.columns([1, 1, 5])
+
+with col1:
+    st.button('コピー')
 with col2:
-    st.button('生成')
+    st.button('削除')
