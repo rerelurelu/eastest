@@ -1,3 +1,5 @@
+import time
+
 import streamlit as st
 
 from functions.generate_text import generate_text
@@ -30,14 +32,16 @@ with col3:
 
 
 if st.button('生成'):
-    try:
-        check_inputs(input_text, input_digits)
-        digits = int(input_digits)
-        st.session_state.generated_texts.append(generate_text(input_text, digits))
-    except ValueError:
-        st.error('桁数には数字を入力してください。')
-    except Exception as e:
-        st.error(e)
+    with st.spinner('生成中...'):
+        try:
+            check_inputs(input_text, input_digits)
+            digits = int(input_digits)
+            st.session_state.generated_texts.append(generate_text(input_text, digits))
+        except ValueError:
+            st.error('桁数には数字を入力してください。')
+        except Exception as e:
+            st.error(e)
+
 
 # Margin
 for _ in range(5):
@@ -48,6 +52,7 @@ st.subheader('生成済みテキスト')
 
 if (list_length := len(st.session_state.generated_texts)) > 0:
     for i in range(list_length):
+        blank_line()
         st.text_area(
             '半角英数字: 100桁',
             value=st.session_state.generated_texts[i],
@@ -62,6 +67,5 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
             st.button('コピー', key=f'copy-button-{i}')
         with col2:
             st.button('削除', key=f'delete-button-{i}')
-
 else:
     st.caption('生成済みのテキストはありません。')
