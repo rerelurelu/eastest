@@ -1,14 +1,15 @@
-import time
+from typing import List
 
 import streamlit as st
 
 from functions.generate_text import generate_text
+from models.model import Text
 from utils.blank_line import blank_line
 from utils.check_inputs import check_inputs
 
 # Variables
 if 'generated_texts' not in st.session_state:
-    st.session_state.generated_texts = []
+    st.session_state.generated_texts: List[Text] = []
 
 # Header
 st.title('Eastest')
@@ -36,7 +37,19 @@ if st.button('生成'):
         try:
             check_inputs(input_text, input_digits)
             digits = int(input_digits)
-            st.session_state.generated_texts.append(generate_text(input_text, digits))
+
+            if input_label:
+                label = input_label + ': ' + input_digits
+            else:
+                label = input_digits
+            label += '桁'
+
+            st.session_state.generated_texts.append(
+                Text(
+                    label=label,
+                    generated_text=generate_text(input_text, digits),
+                )
+            )
         except ValueError:
             st.error('桁数には数字を入力してください。')
         except Exception as e:
@@ -54,8 +67,8 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
     for i in range(list_length):
         blank_line()
         st.text_area(
-            '半角英数字: 100桁',
-            value=st.session_state.generated_texts[i],
+            label=st.session_state.generated_texts[i].label,
+            value=st.session_state.generated_texts[i].generated_text,
             disabled=True,
             height=160,
             key=f'textarea-{i}',
