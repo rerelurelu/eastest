@@ -77,8 +77,12 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
         col1, col2, _ = st.columns([1, 1, 5])
 
         with col1:
-            st.button('コピー', key=f'copy-button-{i}')
+            copy_button, copy_index = st.button('コピー', key=f'copy-button-{i}'), i
         with col2:
-            st.button('削除', key=f'delete-button-{i}')
+            delete_button, delete_index = st.button('削除', key=f'delete-button-{i}'), i
+
+            if delete_button:
+                del st.session_state.generated_texts[delete_index]
+                st.experimental_rerun()
 else:
     st.caption('生成済みのテキストはありません。')
