@@ -1,11 +1,12 @@
 from typing import List
 
+import pyperclip
 import streamlit as st
 
-from functions.generate_text import generate_text
 from models.model import Text
 from utils.blank_line import blank_line
 from utils.check_inputs import check_inputs
+from utils.generate_text import generate_text
 
 # Variables
 if 'generated_texts' not in st.session_state:
@@ -27,9 +28,9 @@ col1, col2, col3 = st.columns([2, 3, 1], gap='medium')
 with col1:
     input_label = st.text_input('ラベル', placeholder='半角英数字')
 with col2:
-    input_text = st.text_input('繰り返したい文字', value='埼玉県春日部市', placeholder='埼玉県春日部市')
+    input_text = st.text_input('繰り返したい文字', value='', placeholder='埼玉県春日部市')
 with col3:
-    input_digits = st.text_input('桁数', value=100, placeholder='10')
+    input_digits = st.text_input('桁数', value='', placeholder='10')
 
 
 if st.button('生成'):
@@ -78,6 +79,9 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
 
         with col1:
             copy_button, copy_index = st.button('コピー', key=f'copy-button-{i}'), i
+
+            if copy_button:
+                pyperclip.copy(st.session_state.generated_texts[copy_index].generated_text)
         with col2:
             delete_button, delete_index = st.button('削除', key=f'delete-button-{i}'), i
 
