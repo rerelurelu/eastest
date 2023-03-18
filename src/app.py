@@ -36,9 +36,9 @@ with manual_tab:
         with label_col:
             input_label = st.text_input('ラベル', placeholder='半角英数字')
         with text_col:
-            input_text = st.text_input('繰り返したい文字', value='', placeholder='埼玉県春日部市')
+            input_text = st.text_input('繰り返したい文字 *', value='', placeholder='長野県長野市')
         with digits_col:
-            input_digits = st.text_input('桁数', value='', placeholder='10')
+            input_digits = st.text_input('桁数 *', value='', placeholder='10')
 
         generate_button = st.form_submit_button('テキストを生成')
 
