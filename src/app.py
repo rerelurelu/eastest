@@ -52,9 +52,9 @@ with manual_tab:
                     digits = int(input_digits)
 
                     if input_label:
-                        label = input_label + ': ' + input_digits
+                        label = input_label + ': ' + str(digits)
                     else:
-                        label = input_digits
+                        label = str(digits)
                     label += '桁'
 
                     st.session_state.generated_texts.append(
