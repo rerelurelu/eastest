@@ -1,7 +1,6 @@
 name: Run pytest
 
-on:
-  push:
+on: [push]
 
 jobs:
   build:
@@ -14,4 +13,5 @@ jobs:
         run: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
       - name: run pytest
-        run: pytest
+        run: .venv/bin/pytest
+        
