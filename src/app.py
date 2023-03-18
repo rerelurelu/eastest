@@ -1,11 +1,10 @@
-import csv
+import json
 import time
-from typing import List
+from typing import Dict, List
 
 import pyperclip
 import streamlit as st
 
-from models.model import Text
 from utils.blank_line import blank_line
 from utils.check_inputs import check_inputs
 from utils.generate_text import generate_text
@@ -15,7 +14,7 @@ success_message = None
 if 'disable_submit' not in st.session_state:
     st.session_state.disable_submit = True
 if 'generated_texts' not in st.session_state:
-    st.session_state.generated_texts: List[Text] = []
+    st.session_state.generated_texts: List[Dict] = []
 
 # Header
 st.title('Eastest')
@@ -55,36 +54,35 @@ with manual_tab:
                     label += '桁'
 
                     st.session_state.generated_texts.append(
-                        Text(
-                            label=label,
-                            generated_text=generate_text(input_text, digits),
-                        )
+                        {
+                            'label': label,
+                            'generated_text': generate_text(input_text, digits),
+                        }
                     )
                     success_message = st.success('生成完了🎉')
                 except ValueError:
-                    st.error('桁数には数字を入力してください。')
+                    st.error('桁数には数字を入力してください🙇‍♂️')
                 except Exception as e:
                     st.error(e)
 with auto_tab:
-    with st.form('upload-csv'):
-        uploaded_file = st.file_uploader('CSVファイルをアップロード', type='csv')
+    with st.form('upload-json'):
+        uploaded_file = st.file_uploader('JSONファイルをアップロード', type='json')
         upload_button = st.form_submit_button("テキストを生成")
         if upload_button:
             try:
                 with st.spinner('生成中...'):
-                    file_contents = uploaded_file.getvalue().decode("utf-8").splitlines()
-                    reader = csv.reader(file_contents)
-
-                    for row in reader:
+                    text_data = json.load(uploaded_file)
+                    print(f'data: {text_data}')
+                    for data in text_data:
                         st.session_state.generated_texts.append(
-                            Text(
-                                label=row[0],
-                                generated_text=row[1],
-                            )
+                            {
+                                'label': data['label'],
+                                'generated_text': data['generated_text'],
+                            }
                         )
                     success_message = st.success('生成完了🎉')
             except AttributeError:
-                st.error('CSVファイルをアップロードしてください🙇‍♂️')
+                st.error('JSONファイルをアップロードしてください🙇‍♂️')
 
 # Margin
 for _ in range(5):
@@ -94,13 +92,19 @@ for _ in range(5):
 st.subheader('生成済みテキスト')
 
 if (list_length := len(st.session_state.generated_texts)) > 0:
-    export_button = st.button('CSVファイルをエクスポート')
+    json_data = json.dumps(st.session_state.generated_texts, ensure_ascii=False)
+    export_button = st.download_button(
+        label='JSONファイルとしてエクスポート',
+        data=json_data,
+        file_name='data.json',
+        mime='application/json',
+    )
 
     for i in range(list_length):
         blank_line()
         st.text_area(
-            label=st.session_state.generated_texts[i].label,
-            value=st.session_state.generated_texts[i].generated_text,
+            label=st.session_state.generated_texts[i]['label'],
+            value=st.session_state.generated_texts[i]['generated_text'],
             disabled=True,
             height=160,
             key=f'textarea-{i}',
@@ -123,4 +127,4 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
         time.sleep(3)
         success_message.empty()
 else:
-    st.caption('生成済みのテキストはありません。')
+    st.caption('生成済みのテキストはありません')
