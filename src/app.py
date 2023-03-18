@@ -5,6 +5,7 @@ from typing import Dict, List
 import pyperclip
 import streamlit as st
 
+from settings.page_config import page_config
 from utils.blank_line import blank_line
 from utils.check_inputs import check_inputs
 from utils.generate_text import generate_text
@@ -15,6 +16,9 @@ if 'disable_submit' not in st.session_state:
     st.session_state.disable_submit = True
 if 'generated_texts' not in st.session_state:
     st.session_state.generated_texts: List[Dict] = []
+
+# Page config
+page_config()
 
 # Header
 st.title('Eastest')
@@ -116,9 +120,9 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
             copy_button, copy_index = st.button('コピー', key=f'copy-button-{i}'), i
 
             if copy_button:
-                pyperclip.copy(st.session_state.generated_texts[copy_index].generated_text)
+                pyperclip.copy(st.session_state.generated_texts[copy_index]['generated_text'])
         with col2:
-            delete_button, delete_index = st.button('削除', key=f'delete-button-{i}'), i
+            delete_button, delete_index = st.button('削除', key=f'delete-button-{i}', type='secondary'), i
 
             if delete_button:
                 del st.session_state.generated_texts[delete_index]
