@@ -76,7 +76,6 @@ with auto_tab:
             try:
                 with st.spinner('生成中...'):
                     text_data = json.load(uploaded_file)
-                    print(f'data: {text_data}')
                     for data in text_data:
                         st.session_state.generated_texts.append(
                             {
