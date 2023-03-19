@@ -761,17 +761,6 @@ files = [
 ]
 
 [[package]]
-name = "pyperclip"
-version = "1.8.2"
-description = "A cross-platform clipboard module for Python. (Only handles plain text for now.)"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
-]
-
-[[package]]
 name = "pyrsistent"
 version = "0.19.3"
 description = "Persistent/Functional/Immutable data structures"
@@ -1186,4 +1175,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "2c3bd27cbdc4552538bd8b89ea58ac1912c8799b6cdfabacdff172b68b13c94d"
+content-hash = "8c7ad02bf5eae4add169980abbd79d2a08a13f971614554ab99be958b549b80d"
