@@ -110,7 +110,7 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
     export_button = st.download_button(
         label='JSONファイルとしてエクスポート',
         data=json_data,
-        file_name='data.json',
+        file_name='generated_texts.json',
         mime='application/json',
     )
 
