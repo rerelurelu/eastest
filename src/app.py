@@ -119,7 +119,7 @@ if (list_length := len(st.session_state.generated_texts)) > 0:
         for _ in range(2):
             blank_line()
         st.caption(st.session_state.generated_texts[i]['label'])
-        st.code(st.session_state.generated_texts[i]['generated_text'])
+        st.code(st.session_state.generated_texts[i]['generated_text'], language='wiki')
         delete_button, delete_index = st.button('削除', key=f'delete-button-{i}', type='secondary'), i
 
         if delete_button:
